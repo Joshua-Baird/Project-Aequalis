@@ -1,0 +1,60 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+You grab the data pad as the clanking grows louder, echoing down the corridor. Whatever’s coming isn’t trying to be stealthy.
+You thumb through the cracked interface, eyes darting across half-dead menus until you spot a “Close Door” button—only it’s grayed out,
+an empty energy icon flashing beside it.
+
+The doors need power.
+
+Your gaze snaps to the laser pistol on the wall. It still has a single energy cell attached. The clanking is almost at the doorway now.
+With no time to lose, you rip the cell from the weapon, the indicator light fading out as you sprint toward the far wall. 
+You scan frantically—then spot it: a narrow slot marked with a maintenance sigil. You jam the cell in.
+
+The lights flicker. The floor hums beneath your boots. You slap the Close Door command on the pad.
+With a metallic scream, the door slides shut just as a shadow rounds the corner. Its tall and human shaped
+
+Bang. Bang. Bang.
+
+The door shudders under heavy impacts. Then come muffled shouts, words you can’t quite make out.
+
+The data pad chimes:
+-------------------------------
+⚠ TEMPORARY POWER ESTABLISHED. 
+POWER CELL AT 9%. 
+ESTIMATED DURATION: 2 minutes.
+-------------------------------
+You try to steady your breathing. The faint glow of the pad throws trembling reflections against the walls.
+You swipe through its system files, searching for context—anything to tell you what’s going on. 
+After a few tense moments, a schematic appears:
+-----------------------------------
+VESSEL: ARV Genesis Transit
+CLASS: REDACTED Project Aequalis
+-----------------------------------
+The screen resolves into a wireframe map. Your current location flashes in yellow: Transport Bay - Project Aequalis
+
+You blink. A transport chamber. That makes sense, that’s probably how you ended up here.
+If it brought you in… maybe it can get you out.
+
+You open the transport console on the data pad and select Return to Point of Origin. The screen stutters, then flashes an error:
+-------------------------------------------------
+⚠ INSUFFICIENT ENERGY FOR LONG-DISTANCE TRANSPORT
+-------------------------------------------------
+So much for that idea.
+You glance back at the schematic. The system lists other available destinations within the ship:
+
+1. Bridge
+2. Escape Pods
+3. Cargo Hold
+4. Crew Quarters
+5. Engineering
+
+A quiet chime interrupts your thoughts.
+----------------------------------------------
+⚠ POWER CELL DEPLETING — REMAINING CHARGE: 8%
+----------------------------------------------
+The door hums faintly behind you, its seals dimming as power flickers.
+The data pad buzzes again, its display flickering.
+----------------------------------------------
+⚠ ENERGY RESERVE CRITICALLY LOW. 
+TRANSPORT SYSTEM WILL DEACTIVATE IN 1:34.
+----------------------------------------------
+You glance at the schematic one last time. Whatever you do, you have to do it now, before the power’s gone for good.
