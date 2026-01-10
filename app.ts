@@ -11,6 +11,10 @@ const restartBtn = document.getElementById("restart") as HTMLButtonElement;
 let current = "intro";
 
 let timerInterval: NodeJS.Timeout | null = null;
+let currentTimerSeconds: number = 0;
+let isTimedSequence: boolean = false;
+let isTypingComplete: boolean = false;
+let isTimerPaused: boolean = false;
 
 function ambienceClassFor(key: string): string {
     switch (key) {
@@ -77,6 +81,7 @@ async function typeText(fullText: string, element: HTMLElement, speed = 18): Pro
     // remove caret
     if (element.contains(caret)) element.removeChild(caret);
     isTyping = false;
+    isTypingComplete = true;
 }
 
 interface Scene {
@@ -94,11 +99,91 @@ interface Scene {
     resetTimerTo?: number;
 }
 
+function formatTimeDisplay(seconds: number): string {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+}
+
+function updateSceneTimeReferences(): void {
+    if (!isTimedSequence || !textEl) return;
+
+    const timeDisplay = formatTimeDisplay(currentTimerSeconds);
+    let html = textEl.innerHTML;
+
+    // Replace time patterns like "1:34", "01:34", "1:30", etc with current timer
+    html = html.replace(/\b(0?\d):(\d{2})\b/g, timeDisplay);
+
+    textEl.innerHTML = html;
+}
+
+function pauseTimer(): void {
+    if (timerInterval !== null) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        isTimerPaused = true;
+    }
+}
+
+function resumeTimer(durationLost: number = 0): void {
+    if (!isTimerPaused) return;
+
+    isTimerPaused = false;
+
+    // Subtract time lost from current seconds
+    currentTimerSeconds = Math.max(0, currentTimerSeconds - durationLost);
+
+    let seconds = currentTimerSeconds;
+    const timer = document.getElementById("timer");
+
+    if (timer) {
+        // Update display immediately
+        const minutes = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        const display = `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        timer.textContent = display;
+
+        timerInterval = setInterval(() => {
+            seconds--;
+            currentTimerSeconds = seconds;
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            const display = `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            timer.textContent = display;
+
+            // Update scene text with current timer value, but only after typing is complete
+            if (isTypingComplete) {
+                updateSceneTimeReferences();
+            }
+
+            if (seconds <= 0) {
+                if (timerInterval) clearInterval(timerInterval);
+                timerInterval = null;
+                timer.textContent = "";
+                isTimedSequence = false;
+                isTypingComplete = false;
+                goTo("fissle_ending");
+            }
+        }, 1000);
+    }
+}
+
 function renderScene(id: string): void {
     const s = scenes[id] as Scene;
     if (!s) return;
     current = id;
     titleEl.textContent = s.title || "";
+
+    // Reset typing complete flag when rendering a new scene
+    isTypingComplete = false;
+
+    // Mark if this is a timed sequence scene
+    isTimedSequence = (id === "data_part2" || id === "fissle" || id === "fissle_attempt");
+
+    // Pause timer when reaching fissle scene (the attempt)
+    if (id === "fissle") {
+        pauseTimer();
+    }
 
     // Stop any running timer when changing scenes, but preserve timer for scenes in the timed sequence
     const isTimedScene = (id === "data_part2" || id === "fissle" || id === "fissle_attempt" || id === "fissle_part2");
@@ -148,6 +233,9 @@ function renderScene(id: string): void {
         // after typing completes, render choices
         const choices = s.choices || [];
 
+        // Update time references after typing is complete
+        updateSceneTimeReferences();
+
         if (s.hideChoicesInitially) {
             // Show a continue button to reveal choices
             const continueBtn = document.createElement("button");
@@ -158,12 +246,17 @@ function renderScene(id: string): void {
                 const nextScene = s.nextScene || "fissle_part2";
                 if (scenes[nextScene]) {
                     renderScene(nextScene);
-                    // Check if this scene should reset the timer
-                    const nextSceneData = scenes[nextScene] as Scene;
-                    if (nextSceneData && nextSceneData.resetTimerTo !== undefined) {
-                        startTimer(nextSceneData.resetTimerTo);
-                    } else if (nextScene === "data_part2" || nextScene === "fissle_part2") {
-                        startTimer(90);
+                    // Check if this is a transition from fissle to fissle_attempt (resume with 40 seconds lost)
+                    if (id === "fissle" && nextScene === "fissle_attempt") {
+                        resumeTimer(40);
+                    } else {
+                        // Check if this scene should reset the timer
+                        const nextSceneData = scenes[nextScene] as Scene;
+                        if (nextSceneData && nextSceneData.resetTimerTo !== undefined) {
+                            startTimer(nextSceneData.resetTimerTo);
+                        } else if (nextScene === "data_part2" || nextScene === "fissle_part2") {
+                            startTimer(90);
+                        }
                     }
                 } else {
                     choicesEl.innerHTML = "";
@@ -244,7 +337,7 @@ document.addEventListener("keydown", (e) => {
     }
 });
 
-export function startTimer(duration: number = 90, onComplete?: () => void) {
+function startTimer(duration: number = 90, onComplete?: () => void) {
     const timer = document.getElementById("timer");
     if (timer) {
         // Clear any existing timer
@@ -254,18 +347,27 @@ export function startTimer(duration: number = 90, onComplete?: () => void) {
         }
 
         let seconds = duration;
+        currentTimerSeconds = seconds;
 
         timerInterval = setInterval(() => {
             seconds--;
+            currentTimerSeconds = seconds;
             const minutes = Math.floor(seconds / 60);
             const secs = seconds % 60;
             const display = `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
             timer.textContent = display;
 
+            // Update scene text with current timer value, but only after typing is complete
+            if (isTypingComplete) {
+                updateSceneTimeReferences();
+            }
+
             if (seconds <= 0) {
                 if (timerInterval) clearInterval(timerInterval);
                 timerInterval = null;
                 timer.textContent = "";
+                isTimedSequence = false;
+                isTypingComplete = false;
                 if (onComplete) {
                     onComplete();
                 } else {
