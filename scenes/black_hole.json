@@ -1,0 +1,41 @@
+{
+  "title": "Black Hole",
+  "image": "assets/images/black_hole.png",
+  "textLines": [
+    "----------------------------------------------------------------------------------------------------------------------------------------------------------------",
+    "You force yourself to move.",
+    "The air feels heavier now, thick with the smell of burning metal.",
+    "The corridor tilts beneath your feet, though you know it's not actually slanted.",
+    "",
+    "As you steady yourself against the wall, something strange happens",
+    "the metal under your palm hums faintly, then cools, as if exhaling.",
+    "For a split second, another scent cuts through the scorched air: disinfectant. Sterilizer. A memory you can't quite reach.",
+    "",
+    "Voices echo down the hall — not real ones, but echoes from a recording. You turn.",
+    "A cracked terminal glows weakly, its display stuttering between static and a half-frozen feed.",
+    "Figures in uniform rush down the corridor, alarms flashing behind them.",
+    "One stops, shouting something you can't hear. The image freezes mid-frame, face twisted in panic.",
+    "Then it burns out, leaving the hallway dark again.",
+    "",
+    "You catch sight of a broken placard above the screen:",
+    "PROJECT AEQUALIS — Phase IV: Cognitive Stabilization via Professional Transfer",
+    "",
+    "The words mean nothing… yet somehow, they make your stomach tighten.",
+    "",
+    "You move on, passing a viewport set into the wall. At first, you think it's shattered;",
+    "the stars beyond look smeared and bent, warping around something so black it almost feels like a hole in your vision.",
+    "You take a step closer, pulse pounding.",
+    "",
+    "You glance down the corridor. To your left, a ladder leads up toward the Bridge — maybe you can reach the controls, find out what's happening.",
+    "To your right, a flickering sign reads ENGINEERING — if there's any chance to stabilize whatever's causing this, it'll be there.",
+    "",
+    "What do you do?",
+    "1.\tHead for the Bridge — you need answers.",
+    "2.\tGo to Engineering — maybe you can still save the ship."
+  ],
+  "choices": [
+    { "text": "Head for the Bridge", "target": "bridge_ending" },
+    { "text": "Go to Engineering", "target": "engeneering_shooter_ending" }
+  ],
+  "ambience": "blackhole"
+}

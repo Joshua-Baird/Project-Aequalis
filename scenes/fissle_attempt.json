@@ -1,0 +1,37 @@
+{
+  "title": "Transport Failed - Escape Pods",
+  "image": "assets/images/escape_pod.png",
+  "textLines": [
+    "",
+    "Then the pad screams:",
+    "----------------------------------------------------",
+    "⚠ ERROR: INSUFFICIENT ENERGY — TRANSFER INTERRUPTED",
+    "⚠ FIELD COLLAPSING — EMERGENCY RECALL",
+    "----------------------------------------------------",
+    "The light collapses inward like a pulled breath. The pull in your gut releases and you stumble, gripping the console to steady yourself.",
+    "The corridor feels too loud; your heartbeat thunders in your ears.",
+    "",
+    "The data pad updates, numbers scrolling with ugly jitter:",
+    "----------------------------------------------------------------------",
+    "TEMPORARY POWER ESTABLISHED",
+    "POWER CELL REMAINING: 00:54",
+    "TRANSPORT SYSTEM STANDBY — NEXT ATTEMPT WILL CONSUME REMAINING RESERVE",
+    "----------------------------------------------------------------------",
+    "You swallow. Whatever you just felt—whatever that brief double-image was—didn't finish.",
+    "But it used up time. You used almost forty seconds of the last reserve and got nothing but a collapsed field and the memory of being stretched.",
+    "",
+    "A faint smear of light lingers on the wall where the field formed, like a ghost burn.",
+    "Your hands tremble where they rested against the console.",
+    "",
+    "You have seconds to decide—and the pad makes the choices painfully clear."
+  ],
+  "choices": [
+    { "text": "Go to Bridge", "target": "bridge_transport" },
+    { "text": "Go to Escape Pods", "target": "fissle_ending" },
+    { "text": "Go to Cargo Hold", "target": "cargo" },
+    { "text": "Go to Crew Quarters", "target": "fissle_ending" },
+    { "text": "Go to Engineering", "target": "fissle_ending" }
+  ],
+  "resetTimerTo": 35,
+  "ambience": "data"
+}

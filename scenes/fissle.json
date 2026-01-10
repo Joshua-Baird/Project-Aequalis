@@ -1,0 +1,25 @@
+{
+  "title": "Transport Failed - Escape Pods",
+  "image": "assets/images/escape_pod.png",
+  "textLines": [
+    "You tap Escape Pods on the transport menu and hold your breath.",
+    "The pad stutters, then the transport UI slides into a single-line progress bar.",
+    "----------------------------------------------------------",
+    "INITIATING SHORT-RANGE TRANSFER — DESTINATION: ESCAPE PODS",
+    "Engaging local field… stabilizing matrix…",
+    "----------------------------------------------------------",
+    "The floor hums. Light crawls across the walls like water. For a half-second the world feels wrong—your weight lurches, your limbs feel slightly unmoored—then a ribbon of cold light snakes around you from foot to shoulder.",
+    "The pad in your hand vibrates with the field's pulse.",
+    "-------------------------------------------",
+    "⚠ POWER DRAW: HIGH — TEMPORARY RESERVE 1:34",
+    "⚠ ESTIMATED CHARGE FOR TRANSFER: 00:40",
+    "-------------------------------------------",
+    "The transport field tightens. You feel it—tension along your skin, that same stretchy, brushed sensation you felt when you were brought here.",
+    "For an instant you swear you see a double-outline of yourself, faint and out of sync, like a reflection that hasn't quite caught up."
+  ],
+  "hideChoicesInitially": true,
+  "continueButtonText": "Continue",
+  "nextScene": "fissle_attempt",
+  "resetTimerTo": 35,
+  "ambience": "data"
+}

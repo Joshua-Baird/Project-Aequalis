@@ -1,0 +1,32 @@
+{
+  "title": "Data Pad - Destinations",
+  "image": "assets/images/data.png",
+  "textLines": [
+    "",
+    "1. Bridge",
+    "2. Escape Pods",
+    "3. Cargo Hold",
+    "4. Crew Quarters",
+    "5. Engineering",
+    "",
+    "A quiet chime interrupts your thoughts.",
+    "----------------------------------------------",
+    "⚠ POWER CELL DEPLETING — REMAINING CHARGE: 8%",
+    "----------------------------------------------",
+    "The door hums faintly behind you, its seals dimming as power flickers.",
+    "The data pad buzzes again, its display flickering.",
+    "----------------------------------------------",
+    "⚠ ENERGY RESERVE CRITICALLY LOW.",
+    "TRANSPORT SYSTEM WILL DEACTIVATE IN 1:34.",
+    "----------------------------------------------",
+    "You glance at the schematic one last time. Whatever you do, you have to do it now, before the power's gone for good."
+  ],
+  "choices": [
+    { "text": "Go to Bridge", "target": "bridge_transport" },
+    { "text": "Go to Escape Pods", "target": "fissle" },
+    { "text": "Go to Cargo Hold", "target": "cargo" },
+    { "text": "Go to Crew Quarters", "target": "fissle" },
+    { "text": "Go to Engineering", "target": "fissle" }
+  ],
+  "ambience": "data"
+}
