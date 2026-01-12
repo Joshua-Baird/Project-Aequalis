@@ -4,6 +4,7 @@ const scenes: Record<string, Scene> = scenesObj.scenes;
 
 const sceneEl = document.getElementById("scene") as HTMLElement;
 const titleEl = document.getElementById("scene-title") as HTMLElement;
+if (titleEl) titleEl.style.display = "none";
 const textEl = document.getElementById("scene-text") as HTMLElement;
 const choicesEl = document.getElementById("choices") as HTMLElement;
 const restartBtn = document.getElementById("restart") as HTMLButtonElement;
@@ -13,8 +14,8 @@ let current = "intro";
 let timerInterval: NodeJS.Timeout | null = null;
 let currentTimerSeconds: number = 0;
 let isTimedSequence: boolean = false;
-let isTypingComplete: boolean = false;
 let isTimerPaused: boolean = false;
+let lastChoiceText: string = "";
 
 function ambienceClassFor(key: string): string {
     switch (key) {
@@ -81,7 +82,6 @@ async function typeText(fullText: string, element: HTMLElement, speed = 18): Pro
     // remove caret
     if (element.contains(caret)) element.removeChild(caret);
     isTyping = false;
-    isTypingComplete = true;
 }
 
 interface Scene {
@@ -107,12 +107,19 @@ function formatTimeDisplay(seconds: number): string {
 
 function updateSceneTimeReferences(): void {
     if (!isTimedSequence || !textEl) return;
+    // Avoid replacing innerHTML while typing is in progress (caret/text-nodes will be disrupted)
+    if (isTyping) return;
 
     const timeDisplay = formatTimeDisplay(currentTimerSeconds);
     let html = textEl.innerHTML;
 
-    // Replace time patterns like "1:34", "01:34", "1:30", etc with current timer
-    html = html.replace(/\b(0?\d):(\d{2})\b/g, timeDisplay);
+    // Replace time patterns in various formats (including ERROR 99:99 placeholders):
+    // "TEMPORARY RESERVE ERROR 99:99" or "TEMPORARY RESERVE X:XX"
+    html = html.replace(/TEMPORARY RESERVE\s+(?:ERROR\s+)?(\d{1,2}):(\d{2})/g, `TEMPORARY RESERVE ${timeDisplay}`);
+    // "WILL DEACTIVATE IN ERROR 99:99" or "WILL DEACTIVATE IN X:XX"
+    html = html.replace(/WILL DEACTIVATE IN\s+(?:ERROR\s+)?(\d{1,2}):(\d{2})/g, `WILL DEACTIVATE IN ${timeDisplay}`);
+    // "POWER CELL REMAINING: ERROR 99:99" or "POWER CELL REMAINING: XX:XX"
+    html = html.replace(/POWER CELL REMAINING:\s+(?:ERROR\s+)?(\d{1,2}):(\d{2})/g, `POWER CELL REMAINING: ${timeDisplay}`);
 
     textEl.innerHTML = html;
 }
@@ -151,17 +158,14 @@ function resumeTimer(durationLost: number = 0): void {
             const display = `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
             timer.textContent = display;
 
-            // Update scene text with current timer value, but only after typing is complete
-            if (isTypingComplete) {
-                updateSceneTimeReferences();
-            }
+            // Update scene text with current timer value
+            updateSceneTimeReferences();
 
             if (seconds <= 0) {
                 if (timerInterval) clearInterval(timerInterval);
                 timerInterval = null;
                 timer.textContent = "";
                 isTimedSequence = false;
-                isTypingComplete = false;
                 goTo("fissle_ending");
             }
         }, 1000);
@@ -172,13 +176,19 @@ function renderScene(id: string): void {
     const s = scenes[id] as Scene;
     if (!s) return;
     current = id;
-    titleEl.textContent = s.title || "";
 
-    // Reset typing complete flag when rendering a new scene
-    isTypingComplete = false;
+    // (typing-complete flag removed; live updates now occur during typing)
 
-    // Mark if this is a timed sequence scene
-    isTimedSequence = (id === "data_part2" || id === "fissle" || id === "fissle_attempt");
+    // Mark if this is a timed sequence scene (include any scene that displays dynamic time placeholders)
+    isTimedSequence = (
+        id === "data_part2" ||
+        id === "fissle" ||
+        id === "fissle_attempt" ||
+        id === "fissle_part2" ||
+        id === "bridge_transport" ||
+        id === "cargo" ||
+        id === "fissle_ending"
+    );
 
     // Pause timer when reaching fissle scene (the attempt)
     if (id === "fissle") {
@@ -212,9 +222,15 @@ function renderScene(id: string): void {
     }
 
     // render text with typing effect
-    const fullText = Array.isArray(s.textLines)
+    let fullText = Array.isArray(s.textLines)
         ? s.textLines.join("\n")
         : s.text || "";
+    
+    // Process destination replacements in text BEFORE typing starts
+    if (lastChoiceText) {
+        fullText = fullText.replace(/\{destination\}/g, lastChoiceText);
+    }
+    
     // disable choices while typing
     choicesEl.innerHTML = "";
     // start typing
@@ -233,7 +249,7 @@ function renderScene(id: string): void {
         // after typing completes, render choices
         const choices = s.choices || [];
 
-        // Update time references after typing is complete
+        // Update time references during active countdown
         updateSceneTimeReferences();
 
         if (s.hideChoicesInitially) {
@@ -285,6 +301,8 @@ function renderChoices(choices: Array<{ text: string; target: string }>): void {
             b.innerHTML = "<strong>" + escapeHtml(ch.text) + "</strong>";
             b.setAttribute("data-choice-index", String(idx + 1));
             b.onclick = () => {
+                // Store the choice text for destination placeholders
+                lastChoiceText = ch.text;
                 const next =
                     typeof ch.target === "string" ? ch.target : ch.target;
                 if (next && scenes[next]) renderScene(next);
@@ -357,17 +375,14 @@ function startTimer(duration: number = 90, onComplete?: () => void) {
             const display = `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
             timer.textContent = display;
 
-            // Update scene text with current timer value, but only after typing is complete
-            if (isTypingComplete) {
-                updateSceneTimeReferences();
-            }
+            // Update scene text with current timer value
+            updateSceneTimeReferences();
 
             if (seconds <= 0) {
                 if (timerInterval) clearInterval(timerInterval);
                 timerInterval = null;
                 timer.textContent = "";
                 isTimedSequence = false;
-                isTypingComplete = false;
                 if (onComplete) {
                     onComplete();
                 } else {

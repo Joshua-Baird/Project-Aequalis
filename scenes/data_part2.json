@@ -17,16 +17,16 @@
     "The data pad buzzes again, its display flickering.",
     "----------------------------------------------",
     "⚠ ENERGY RESERVE CRITICALLY LOW.",
-    "TRANSPORT SYSTEM WILL DEACTIVATE IN 1:34.",
+    "TRANSPORT SYSTEM WILL DEACTIVATE IN ERROR 99:99.",
     "----------------------------------------------",
     "You glance at the schematic one last time. Whatever you do, you have to do it now, before the power's gone for good."
   ],
   "choices": [
-    { "text": "Go to Bridge", "target": "bridge_transport" },
-    { "text": "Go to Escape Pods", "target": "fissle" },
-    { "text": "Go to Cargo Hold", "target": "cargo" },
-    { "text": "Go to Crew Quarters", "target": "fissle" },
-    { "text": "Go to Engineering", "target": "fissle" }
+    { "text": "Bridge", "target": "bridge_transport" },
+    { "text": "Escape Pods", "target": "fissle" },
+    { "text": "Cargo Hold", "target": "cargo" },
+    { "text": "Crew Quarters", "target": "fissle" },
+    { "text": "Engineering", "target": "fissle" }
   ],
   "ambience": "data"
 }

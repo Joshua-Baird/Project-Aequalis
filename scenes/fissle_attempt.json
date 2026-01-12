@@ -1,6 +1,6 @@
 {
   "title": "Transport Failed - Escape Pods",
-  "image": "assets/images/escape_pod.png",
+  "image": "assets/images/fissle.png",
   "textLines": [
     "",
     "Then the pad screams:",
@@ -14,7 +14,7 @@
     "The data pad updates, numbers scrolling with ugly jitter:",
     "----------------------------------------------------------------------",
     "TEMPORARY POWER ESTABLISHED",
-    "POWER CELL REMAINING: 00:54",
+    "POWER CELL REMAINING: ERROR 99:99",
     "TRANSPORT SYSTEM STANDBY — NEXT ATTEMPT WILL CONSUME REMAINING RESERVE",
     "----------------------------------------------------------------------",
     "You swallow. Whatever you just felt—whatever that brief double-image was—didn't finish.",
@@ -23,14 +23,14 @@
     "A faint smear of light lingers on the wall where the field formed, like a ghost burn.",
     "Your hands tremble where they rested against the console.",
     "",
-    "You have seconds to decide—and the pad makes the choices painfully clear."
+    "You have seconds to decide—and the pad makes the choices painfully clear. {destination} is the way."
   ],
   "choices": [
-    { "text": "Go to Bridge", "target": "bridge_transport" },
-    { "text": "Go to Escape Pods", "target": "fissle_ending" },
-    { "text": "Go to Cargo Hold", "target": "cargo" },
-    { "text": "Go to Crew Quarters", "target": "fissle_ending" },
-    { "text": "Go to Engineering", "target": "fissle_ending" }
+    { "text": "Bridge", "target": "bridge_transport" },
+    { "text": "Escape Pods", "target": "fissle_ending" },
+    { "text": "Cargo Hold", "target": "cargo" },
+    { "text": "Crew Quarters", "target": "fissle_ending" },
+    { "text": "Engineering", "target": "fissle_ending" }
   ],
   "resetTimerTo": 35,
   "ambience": "data"
