@@ -281,7 +281,7 @@ function renderScene(id: string): void {
             continueBtn.setAttribute("data-choice-index", "0");
             continueBtn.onclick = () => {
                 // Determine next scene: use routeChoices if available, otherwise use nextScene
-                let nextScene = s.nextScene || "fissle_part2";
+                let nextScene = s.nextScene || "fissle";
 
                 // If this scene has routeChoices, route based on lastChoiceText
                 if (s.routeChoices && lastChoiceText && s.routeChoices[lastChoiceText]) {

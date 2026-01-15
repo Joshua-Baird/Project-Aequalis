@@ -26,11 +26,11 @@
   "routeChoices": {
     "Bridge": "bridge_transport",
     "Cargo Hold": "cargo",
-    "Escape Pods": "fissle_part2",
-    "Crew Quarters": "fissle_part2",
-    "Engineering": "fissle_part2"
+    "Escape Pods": "fissle",
+    "Crew Quarters": "fissle",
+    "Engineering": "fissle"
   },
-  "defaultNextScene": "fissle_part2",
+  "defaultNextScene": "fissle",
   "resetTimerTo": 35,
   "ambience": "data"
 }
