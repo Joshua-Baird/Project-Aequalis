@@ -67,8 +67,8 @@
     "It would mean losing everything in it… but maybe saving the rest of the ship."
   ],
   "choices": [
-    { "text": "Grab the spacesuit and try to patch the breach", "target": "engeneering_cargo_ending" },
-    { "text": "Seal and eject the Cargo Bay", "target": "ejected_ending" }
+    { "text": "Grab the spacesuit and try to patch the breach", "target": "ejected_ending" },
+    { "text": "Seal and eject the Cargo Bay", "target": "engeneering_cargo_ending" }
   ],
   "ambience": "cargo"
 }

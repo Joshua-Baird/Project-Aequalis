@@ -6,7 +6,7 @@ import loot from "./loot.json";
 import black_hole from "./black_hole.json";
 import bridge_transport from "./bridge_transport.json";
 import cargo from "./cargo.json";
-import fissle from "./fissle.json";
+import transport_begin from "./transport_begin.json";
 import fissle_attempt from "./fissle_attempt.json";
 import fissle_part2 from "./fissle_part2.json";
 import fissle_ending from "./fissle_ending.json";
@@ -29,7 +29,7 @@ export const scenes = {
     black_hole,
     bridge_transport,
     cargo,
-    fissle,
+    transport_begin,
     fissle_attempt,
     fissle_part2,
     fissle_ending,

@@ -1,6 +1,8 @@
 {
-  "title": "Transport Failed - Escape Pods",
+  "title": "Transport Sequence Begins",
   "image": "assets/images/fissle.png",
+  "timerID": "transport",
+  "timerPaused": true,
   "textLines": [
     "You tap {destination} on the transport menu and hold your breath.",
     "The pad stutters, then the transport UI slides into a single-line progress bar.",
@@ -20,7 +22,15 @@
   ],
   "hideChoicesInitially": true,
   "continueButtonText": "Continue",
-  "nextScene": "fissle_attempt",
+  "timerPenalty": 40,
+  "routeChoices": {
+    "Bridge": "bridge_transport",
+    "Cargo Hold": "cargo",
+    "Escape Pods": "fissle_part2",
+    "Crew Quarters": "fissle_part2",
+    "Engineering": "fissle_part2"
+  },
+  "defaultNextScene": "fissle_part2",
   "resetTimerTo": 35,
   "ambience": "data"
 }

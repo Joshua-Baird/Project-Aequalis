@@ -97,6 +97,13 @@ interface Scene {
     continueButtonText?: string;
     nextScene?: string;
     resetTimerTo?: number;
+    routeChoices?: Record<string, string>;
+    defaultNextScene?: string;
+    timerID?: string;
+    timerDuration?: number;
+    timerPaused?: boolean;
+    timerEndScene?: string;
+    timerPenalty?: number;
 }
 
 function formatTimeDisplay(seconds: number): string {
@@ -179,30 +186,44 @@ function renderScene(id: string): void {
 
     // (typing-complete flag removed; live updates now occur during typing)
 
-    // Mark if this is a timed sequence scene (include any scene that displays dynamic time placeholders)
-    isTimedSequence = (
-        id === "data_part2" ||
-        id === "fissle" ||
-        id === "fissle_attempt" ||
-        id === "fissle_part2" ||
-        id === "bridge_transport" ||
-        id === "cargo" ||
-        id === "fissle_ending"
-    );
+    // Mark if this is a timed sequence scene (has a timerID property)
+    isTimedSequence = !!(s.timerID);
 
-    // Pause timer when reaching fissle scene (the attempt)
-    if (id === "fissle") {
-        pauseTimer();
+    // Handle timer display visibility
+    const timerEl = document.getElementById("timer");
+    if (timerEl) {
+        if (s.timerID) {
+            // Show timer for scenes with timerID
+            timerEl.style.display = "block";
+            // Add paused class if timer should be paused
+            if (s.timerPaused) {
+                timerEl.classList.add("timer-paused");
+            } else {
+                timerEl.classList.remove("timer-paused");
+            }
+        } else {
+            // Hide timer for scenes without timerID
+            timerEl.style.display = "none";
+        }
     }
 
-    // Stop any running timer when changing scenes, but preserve timer for scenes in the timed sequence
-    const isTimedScene = (id === "data_part2" || id === "fissle" || id === "fissle_attempt" || id === "fissle_part2");
-
-    if (!isTimedScene && timerInterval !== null) {
-        clearInterval(timerInterval);
-        timerInterval = null;
-        const timer = document.getElementById("timer");
-        if (timer) timer.textContent = "";
+    // Handle timer management based on scene properties
+    if (isTimedSequence) {
+        // If scene has timerDuration, start the timer with that duration
+        if (s.timerDuration !== undefined) {
+            startTimer(s.timerDuration);
+        }
+        // If scene has timerPaused, pause the existing timer
+        if (s.timerPaused) {
+            pauseTimer();
+        }
+    } else {
+        // Stop timer when leaving timed sequences
+        if (timerInterval !== null) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            if (timerEl) timerEl.textContent = "";
+        }
     }
 
     // ambience
@@ -225,12 +246,12 @@ function renderScene(id: string): void {
     let fullText = Array.isArray(s.textLines)
         ? s.textLines.join("\n")
         : s.text || "";
-    
+
     // Process destination replacements in text BEFORE typing starts
     if (lastChoiceText) {
         fullText = fullText.replace(/\{destination\}/g, lastChoiceText);
     }
-    
+
     // disable choices while typing
     choicesEl.innerHTML = "";
     // start typing
@@ -259,25 +280,29 @@ function renderScene(id: string): void {
             continueBtn.innerHTML = "<strong>" + escapeHtml(s.continueButtonText || "View Schematic") + "</strong>";
             continueBtn.setAttribute("data-choice-index", "0");
             continueBtn.onclick = () => {
-                const nextScene = s.nextScene || "fissle_part2";
+                // Determine next scene: use routeChoices if available, otherwise use nextScene
+                let nextScene = s.nextScene || "fissle_part2";
+
+                // If this scene has routeChoices, route based on lastChoiceText
+                if (s.routeChoices && lastChoiceText && s.routeChoices[lastChoiceText]) {
+                    nextScene = s.routeChoices[lastChoiceText];
+                } else if (s.routeChoices && s.defaultNextScene) {
+                    nextScene = s.defaultNextScene;
+                }
+
                 if (scenes[nextScene]) {
-                    renderScene(nextScene);
-                    // Check if this is a transition from fissle to fissle_attempt (resume with 40 seconds lost)
-                    if (id === "fissle" && nextScene === "fissle_attempt") {
-                        resumeTimer(40);
-                    } else {
-                        // Check if this scene should reset the timer
+                    // If current scene is paused with a timer, resume with penalty when moving to next timed scene
+                    if (s.timerPaused && s.timerPenalty && isTimedSequence) {
                         const nextSceneData = scenes[nextScene] as Scene;
-                        if (nextSceneData && nextSceneData.resetTimerTo !== undefined) {
-                            startTimer(nextSceneData.resetTimerTo);
-                        } else if (nextScene === "data_part2" || nextScene === "fissle_part2") {
-                            startTimer(90);
+                        if (nextSceneData && nextSceneData.timerID) {
+                            // Next scene has a timer, so resume the paused one with penalty
+                            resumeTimer(s.timerPenalty);
                         }
                     }
+                    renderScene(nextScene);
                 } else {
                     choicesEl.innerHTML = "";
                     renderChoices(choices);
-                    startTimer();
                 }
             };
             choicesEl.appendChild(continueBtn);
@@ -329,6 +354,11 @@ function escapeHtml(str: string | null): string {
 
 async function init(): Promise<void> {
     renderScene(current);
+    // Start timer if intro scene has timerDuration
+    const introScene = scenes[current] as Scene;
+    if (introScene && introScene.timerDuration !== undefined) {
+        startTimer(introScene.timerDuration);
+    }
 }
 
 restartBtn.addEventListener("click", () => goTo("intro"));
@@ -386,7 +416,10 @@ function startTimer(duration: number = 90, onComplete?: () => void) {
                 if (onComplete) {
                     onComplete();
                 } else {
-                    goTo("fissle_ending");
+                    // Use current scene's timerEndScene property if available
+                    const currentScene = scenes[current] as Scene;
+                    const endScene = currentScene?.timerEndScene || "fissle_ending";
+                    goTo(endScene);
                 }
             }
         }, 1000);

@@ -1,6 +1,8 @@
 {
   "title": "Data Pad - Destinations",
   "image": "assets/images/data.png",
+  "timerID": "transport",
+  "timerDuration": 90,
   "textLines": [
     "",
     "1. Bridge",
@@ -22,11 +24,11 @@
     "You glance at the schematic one last time. Whatever you do, you have to do it now, before the power's gone for good."
   ],
   "choices": [
-    { "text": "Bridge", "target": "bridge_transport" },
-    { "text": "Escape Pods", "target": "fissle" },
-    { "text": "Cargo Hold", "target": "cargo" },
-    { "text": "Crew Quarters", "target": "fissle" },
-    { "text": "Engineering", "target": "fissle" }
+    { "text": "Bridge", "target": "transport_begin" },
+    { "text": "Escape Pods", "target": "transport_begin" },
+    { "text": "Cargo Hold", "target": "transport_begin" },
+    { "text": "Crew Quarters", "target": "transport_begin" },
+    { "text": "Engineering", "target": "transport_begin" }
   ],
   "ambience": "data"
 }

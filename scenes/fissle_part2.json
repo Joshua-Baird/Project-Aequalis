@@ -1,6 +1,8 @@
 {
   "title": "Systems Critical - Choose Carefully",
   "image": "assets/images/fissle.png",
+  "timerID": "transport",
+  "timerPenalty": 40,
   "textLines": [
     "The data pad updates, numbers scrolling with ugly jitter:",
     "----------------------------------------------------------------------",

@@ -304,6 +304,21 @@ body {
   display: none;
 }
 
+/* .countdown-timer.timer-paused {
+  opacity: 0.6;
+  border-color: var(--muted);
+  color: var(--muted);
+  text-shadow: 0 0 10px rgba(154, 161, 166, 0.3);
+  box-shadow: 0 0 10px rgba(154, 161, 166, 0.1),
+    inset 0 0 10px rgba(154, 161, 166, 0.02);
+} */
+
+.countdown-timer.timer-paused::before {
+  content: "⏸ TIME PAUSED";
+  color: var(--muted);
+  text-shadow: 0 0 5px rgba(154, 161, 166, 0.3);
+}
+
 .countdown-timer:not(:empty)::before {
   content: "⚠ TIME REMAINING";
   display: block;
