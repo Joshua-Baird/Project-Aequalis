@@ -9,4 +9,5 @@ export default defineConfig({
         outDir: 'dist',
         sourcemap: false,
     },
+    base: '/Project-Aequalis/',
 });
