@@ -48,7 +48,9 @@ body {
   color: var(--muted);
   font-size: 14px;
 }
-
+.title {
+  text-align: center;
+}
 .scene {
   flex: 1;
   display: flex;
@@ -73,10 +75,6 @@ body {
   /* fixed panel size and internal scroll */
   height: 520px;
   overflow: auto;
-}
-#scene-title {
-  margin: 0 0 12px 0;
-  font-size: 20px;
 }
 .scene-text {
   white-space: pre-wrap;
