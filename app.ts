@@ -364,26 +364,65 @@ async function init(): Promise<void> {
 restartBtn.addEventListener("click", () => goTo("intro"));
 
 init();
+// Assuming choicesEl is defined globally or passed in
 
-// allow skipping typing by clicking or pressing Space/Enter
-document.addEventListener("keydown", (e) => {
-    if (isTyping) {
-        if (e.key === " " || e.key === "Enter") {
+const handleGlobalInput = (e: MouseEvent | KeyboardEvent) => {
+    const target = e.target as HTMLElement;
+
+    // 1. SAFETY GUARD
+    // If the user is actually clicking a button with their mouse, 
+    // or hitting Enter while a button is focused, stop here.
+    // We let the button's own event listener handle the logic.
+    if (target.closest("button") || target.closest("a")) {
+        return;
+    }
+
+    // 2. KEYBOARD LOGIC
+    if (e.type === "keydown") {
+        const keyEvent = e as KeyboardEvent;
+
+        // Scenario A: Skip Typing (Space or Enter)
+        if (isTyping) {
+            if (keyEvent.code === "Space" || keyEvent.code === "Enter") {
+                skipTyping = true;
+                e.preventDefault(); // Prevents scrolling
+            }
+            return; // Don't check number keys if we just skipped typing
+        }
+
+        // Scenario B: Number Keys (Select Option)
+        // Only run this if we ARE NOT typing
+        if (!isTyping && /[1-9]/.test(keyEvent.key)) {
+            const keyNum = parseInt(keyEvent.key, 10);
+
+            if (choicesEl) {
+                // Find button with matching data-choice-index
+                const btn = Array.from(choicesEl.children).find(
+                    child => (child as HTMLElement).getAttribute("data-choice-index") === String(keyNum)
+                ) as HTMLButtonElement | undefined;
+
+                if (btn) {
+                    // This triggers the button's click listener.
+                    // Because of the 'SAFETY GUARD' at the top of this function,
+                    // this simulated click won't cause weird loops.
+                    btn.click();
+                }
+            }
+        }
+    }
+
+    // 3. MOUSE LOGIC (Skip Typing)
+    if (e.type === "click") {
+        if (isTyping) {
             skipTyping = true;
             e.preventDefault();
         }
-        return;
     }
-    // if not typing, allow number keys to pick choices (1-based)
-    if (!isTyping && /[1-9]/.test(e.key)) {
-        const keyNum = parseInt(e.key, 10);
-        // Find button with matching data-choice-index
-        const btn = Array.from(choicesEl.children).find(
-            child => (child as HTMLElement).getAttribute("data-choice-index") === String(keyNum)
-        ) as HTMLButtonElement;
-        if (btn) btn.click();
-    }
-});
+};
+
+// Add listeners
+document.addEventListener("click", handleGlobalInput);
+document.addEventListener("keydown", handleGlobalInput);
 
 function startTimer(duration: number = 90, onComplete?: () => void) {
     const timer = document.getElementById("timer");
