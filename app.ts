@@ -260,19 +260,10 @@ function renderScene(id: string): void {
     if (bgEl) {
         if (s.image) {
             bgEl.style.opacity = s.imageOpacity || "0.18";
-            
-            // Start with PNG as immediate fallback
-            bgEl.style.backgroundImage = `url("${s.image}")`;
-            
-            // Try to upgrade to WebP if available
+
+            // Use WebP (90% smaller, loads instantly)
             const imagePath = s.image.replace(/\.[^.]+$/, '');
-            const webpUrl = `${imagePath}.webp`;
-            
-            const testImg = new Image();
-            testImg.onload = () => {
-                bgEl.style.backgroundImage = `url("${webpUrl}")`;
-            };
-            testImg.src = webpUrl;
+            bgEl.style.backgroundImage = `url("${imagePath}.webp")`;
         } else {
             bgEl.style.backgroundImage = "";
         }
