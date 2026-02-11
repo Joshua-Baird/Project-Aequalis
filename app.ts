@@ -259,10 +259,20 @@ function renderScene(id: string): void {
     const bgEl = document.getElementById("scene-bg") as HTMLElement;
     if (bgEl) {
         if (s.image) {
-            // Try WebP first (with .webp extension), fall back shows PNG
-            const imagePath = s.image.replace(/\.[^.]+$/, '');
-            bgEl.style.backgroundImage = `url("${imagePath}.webp"), url("${s.image}")`;
             bgEl.style.opacity = s.imageOpacity || "0.18";
+            
+            // Start with PNG as immediate fallback
+            bgEl.style.backgroundImage = `url("${s.image}")`;
+            
+            // Try to upgrade to WebP if available
+            const imagePath = s.image.replace(/\.[^.]+$/, '');
+            const webpUrl = `${imagePath}.webp`;
+            
+            const testImg = new Image();
+            testImg.onload = () => {
+                bgEl.style.backgroundImage = `url("${webpUrl}")`;
+            };
+            testImg.src = webpUrl;
         } else {
             bgEl.style.backgroundImage = "";
         }
