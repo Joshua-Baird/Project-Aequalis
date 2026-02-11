@@ -18,9 +18,16 @@ body,
 }
 body {
   margin: 0;
-  font-family: "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial;
-  background: radial-gradient(
+  font-family:
+    "Space Grotesk",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial;
+  background:
+    radial-gradient(
       1200px 800px at 10% 20%,
       rgba(102, 217, 239, 0.06),
       transparent
@@ -153,8 +160,9 @@ body {
   border: 1px solid rgba(102, 217, 239, 0.06);
 }
 .terminal-mode .scene-text {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono",
-    "Courier New", monospace;
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New",
+    monospace;
   color: #9ef0b0;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.6), transparent);
   padding: 18px;
@@ -231,7 +239,8 @@ body {
   background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.15), transparent);
 }
 .ambience-laser {
-  background: linear-gradient(
+  background:
+    linear-gradient(
       180deg,
       rgba(102, 217, 239, 0.04),
       rgba(255, 108, 108, 0.02)
@@ -293,7 +302,8 @@ body {
   text-align: center;
   letter-spacing: 4px;
   text-shadow: 0 0 20px rgba(102, 217, 239, 0.5);
-  box-shadow: 0 0 20px rgba(102, 217, 239, 0.2),
+  box-shadow:
+    0 0 20px rgba(102, 217, 239, 0.2),
     inset 0 0 20px rgba(102, 217, 239, 0.05);
   position: relative;
 }

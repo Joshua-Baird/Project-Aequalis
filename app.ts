@@ -259,7 +259,9 @@ function renderScene(id: string): void {
     const bgEl = document.getElementById("scene-bg") as HTMLElement;
     if (bgEl) {
         if (s.image) {
-            bgEl.style.backgroundImage = `url("${s.image}")`;
+            // Try WebP first (with .webp extension), fall back shows PNG
+            const imagePath = s.image.replace(/\.[^.]+$/, '');
+            bgEl.style.backgroundImage = `url("${imagePath}.webp"), url("${s.image}")`;
             bgEl.style.opacity = s.imageOpacity || "0.18";
         } else {
             bgEl.style.backgroundImage = "";
